@@ -3051,7 +3051,7 @@
 //  SENSORS
 //*************************************************************************************************
 #ifdef MMU2S
-#define PindaON HIGH // pin state
+#define PindaON LOW // pin state
 #endif
 
 //#define IR_ON_MMU // define if IR is connected on the MMU board, comment if IR is on printer board (last Marlin 2.0 bugfix)
@@ -3105,11 +3105,11 @@
 //*************************************************************************************
 // this resets the selector stepper motor after the selected number of tool changes
 #define TOOLSYNC 5                          // number of tool change (T) commands before a selector resync is performed
-#define MAXSELECTOR_STEPS   1800            // maximum number of selector stepper motor (used to move all the way to the right or left
-#define CSSTEPS 357                         // extruder steps
-#define CS_RIGHT_FORCE 100                  // move more on left when homing
+#define MAXSELECTOR_STEPS   7290            // maximum number of selector stepper motor (used to move all the way to the right or left
+#define CSSTEPS 1295                         // extruder steps
+#define CS_RIGHT_FORCE 1                  // move more on left when homing
 #define CS_RIGHT_FORCE_SELECTOR_0 5         // move more on left to touch the wall
-#define COLORSELECTORMOTORDELAY 60          // 60 useconds    (selector motor)
+#define COLORSELECTORMOTORDELAY 300          // 60 useconds    (selector motor)
 #define UNLOAD_LENGTH_BACK_COLORSELECTOR 30 // Distance to restract the filament into the MMU
 #endif
 
@@ -3117,3 +3117,6 @@
 //  EXTRUDER settings
 //*************************************************************************************************
 #define EXTRUDERMOTORDELAY 120               // 120 useconds, controls filament feed speed to the printer
+//#define ASD                                 //DEBUG
+//#define DEBUG_CS_STEPS
+

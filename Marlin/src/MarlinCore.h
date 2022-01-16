@@ -83,7 +83,6 @@ bool pin_is_protected(const pin_t pin);
 
 extern const char M112_KILL_STR[];
 
-
 extern int isFilamentLoadedPinda();
 
 extern void checkSerialInterface();
@@ -115,7 +114,7 @@ extern void loadFilamentToFinda();
 extern void activateColorSelector();
 extern void deActivateColorSelector();
 extern void colorSelector(char selection);
-extern void csTurnAmount(int steps, int direction);
+extern int csTurnAmount(int steps, int direction);
 extern void initColorSelector();
 extern void syncColorSelector();
 #endif

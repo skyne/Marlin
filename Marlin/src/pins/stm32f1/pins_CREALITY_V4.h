@@ -222,14 +222,6 @@
 #define idlerStepPin Y_STEP_PIN
 #define idlerDirPin  Y_DIR_PIN
 #define idlerEnablePin Y_ENABLE_PIN
-#ifdef USE_TMC
-#define idlerRMSCurrent 750
-#define idlerSerialRXPin Y_SERIAL_RX_PIN
-#define idlerSerialTXPin Y_SERIAL_TX_PIN
-#define idlerRSense Y_RSENSE
-#define idlerMicrosteps Y_MICROSTEPS
-#define idlerEndstop Y_STOP_PIN
-#endif
 #define idlerEndstop Y_STOP_PIN
 
 // Extruder stepper motor

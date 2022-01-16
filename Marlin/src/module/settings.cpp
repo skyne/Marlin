@@ -166,6 +166,10 @@
   #include "../lcd/extui/dgus/DGUSDisplayDef.h"
 #endif
 
+#ifdef MMU2S
+  #include "../mmu_state.h"
+#endif
+
 #pragma pack(push, 1) // No padding between variables
 
 #if HAS_ETHERNET
@@ -535,6 +539,12 @@ typedef struct SettingsDataStruct {
 
   #if HAS_MULTI_LANGUAGE
     uint8_t ui_language;                                // M414 S
+  #endif
+
+
+  #ifdef MMU2S
+  int currentColorSelectorPosition;
+  int colorSelectorMaxSteps;
   #endif
 
 } SettingsData;
@@ -1519,6 +1529,11 @@ void MarlinSettings::postprocess() {
       EEPROM_WRITE(ui.language);
     #endif
 
+    #ifdef MMU2S
+    _FIELD_TEST(mmu_state.currentColorSelectorPosition);
+    EEPROM_WRITE(mmu_state.currentColorSelectorPosition);
+    #endif
+
     //
     // Report final CRC and Data Size
     //
@@ -1536,7 +1551,9 @@ void MarlinSettings::postprocess() {
       EEPROM_WRITE(final_crc);
 
       // Report storage size
+#ifdef ASD
       DEBUG_ECHO_MSG("Settings Stored (", eeprom_size, " bytes; crc ", (uint32_t)final_crc, ")");
+#endif
 
       eeprom_error |= size_error(eeprom_size);
     }
@@ -1572,7 +1589,9 @@ void MarlinSettings::postprocess() {
         stored_ver[0] = '?';
         stored_ver[1] = '\0';
       }
+#ifdef ASD
       DEBUG_ECHO_MSG("EEPROM version mismatch (EEPROM=", stored_ver, " Marlin=" EEPROM_VERSION ")");
+#endif
       TERN_(DWIN_CREALITY_LCD_ENHANCED, LCD_MESSAGE(MSG_ERR_EEPROM_VERSION));
 
       IF_DISABLED(EEPROM_AUTO_INIT, ui.eeprom_alert_version());
@@ -2463,24 +2482,34 @@ void MarlinSettings::postprocess() {
       }
       #endif
 
+      #ifdef MMU2S
+      EEPROM_READ(mmu_state.currentColorSelectorPosition);
+      #endif
+
       //
       // Validate Final Size and CRC
       //
       eeprom_error = size_error(eeprom_index - (EEPROM_OFFSET));
       if (eeprom_error) {
+#ifdef ASD
         DEBUG_ECHO_MSG("Index: ", eeprom_index - (EEPROM_OFFSET), " Size: ", datasize());
+#endif
         IF_DISABLED(EEPROM_AUTO_INIT, ui.eeprom_alert_index());
       }
       else if (working_crc != stored_crc) {
         eeprom_error = true;
+#ifdef ASD
         DEBUG_ERROR_MSG("EEPROM CRC mismatch - (stored) ", stored_crc, " != ", working_crc, " (calculated)!");
+#endif
         TERN_(DWIN_CREALITY_LCD_ENHANCED, LCD_MESSAGE(MSG_ERR_EEPROM_CRC));
         IF_DISABLED(EEPROM_AUTO_INIT, ui.eeprom_alert_crc());
       }
       else if (!validating) {
+#ifdef ASD
         DEBUG_ECHO_START();
         DEBUG_ECHO(version);
         DEBUG_ECHOLNPGM(" stored settings retrieved (", eeprom_index - (EEPROM_OFFSET), " bytes; crc ", (uint32_t)working_crc, ")");
+#endif
       }
 
       if (!validating && !eeprom_error) postprocess();
@@ -2492,7 +2521,9 @@ void MarlinSettings::postprocess() {
           if (!ubl.sanity_check()) {
             #if BOTH(EEPROM_CHITCHAT, DEBUG_LEVELING_FEATURE)
               ubl.echo_name();
+#ifdef ASD
               DEBUG_ECHOLNPGM(" initialized.\n");
+#endif
             #endif
           }
           else {
@@ -3146,6 +3177,10 @@ void MarlinSettings::reset() {
   // MKS UI controller
   //
   TERN_(DGUS_LCD_UI_MKS, MKS_reset_settings());
+
+#ifdef MMU2S
+  mmu_state.currentColorSelectorPosition = -1;
+#endif
 
   postprocess();
 
