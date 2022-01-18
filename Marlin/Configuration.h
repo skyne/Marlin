@@ -3078,7 +3078,7 @@
 //* BOWDEN SIZE : customize it !!!
 //*************************************************************************************
 #ifdef MMU2S
-#define DIST_MMU_EXTRUDER 690   // distance from PINDA to extruder gear (IR)
+#define DIST_MMU_EXTRUDER 1200   // distance from PINDA to extruder gear (IR)
 #endif
 
 #ifdef MMU2_1S

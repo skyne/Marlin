@@ -1205,7 +1205,12 @@ void setup() {
 	{
 		initColorSelector(); // reset the color selector if there is NO filament present
 	}
+  else {
+      delay(2000); // wait a bit for marlin to boot up
+  }
 #endif
+
+
 
   MYSERIAL1.println("start");
 
@@ -1218,7 +1223,7 @@ void setup() {
  *
  ******************************************************/
 
-int IDLEROFFSET[5] = {40,40,40,40,40};
+int IDLEROFFSET[5] = {37,37,37,37,37};
 
 // absolute position of bearing stepper motor
 int bearingAbsPos[5] = {0 + IDLEROFFSET[0], IDLERSTEPSIZE + IDLEROFFSET[1], IDLERSTEPSIZE * 2 + IDLEROFFSET[2], IDLERSTEPSIZE * 3 + IDLEROFFSET[3], IDLERSTEPSIZE * 4 + IDLEROFFSET[4]};
